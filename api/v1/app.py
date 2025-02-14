@@ -3,6 +3,7 @@
 import os
 
 from flask import Flask
+from flask import jsonify
 
 from models import storage
 from api.v1.views import app_views
@@ -14,8 +15,14 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def close_storage(exceptions=None):
-    """Removes current database session after each request"""
+    """Remove current database session after each request"""
     storage.close()
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    """Handle 404 Not Found errors"""
+    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
