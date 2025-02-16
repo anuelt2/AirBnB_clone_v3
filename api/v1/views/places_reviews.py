@@ -84,8 +84,7 @@ def post_review(place_id):
     if "text" not in data:
         abort(400, description="Missing text")
     new_review = Review(place_id=place_id, **data)
-    storage.new(new_review)
-    storage.save()
+    new_review.save()
     return jsonify(new_review.to_dict()), 201
 
 
@@ -108,5 +107,5 @@ def put_review(review_id):
     for key, value in data.items():
         if key not in ignored_keys:
             setattr(review, key, value)
-    storage.save()
+    review.save()
     return jsonify(review.to_dict()), 200
