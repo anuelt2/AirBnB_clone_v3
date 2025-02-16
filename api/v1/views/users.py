@@ -51,8 +51,7 @@ def post_user():
     if "password" not in data:
         abort(400, description="Missing password")
     new_user = User(**data)
-    storage.new(new_user)
-    storage.save()
+    new_user.save()
     return jsonify(new_user.to_dict()), 201
 
 
@@ -72,5 +71,5 @@ def put_user(user_id):
     for key, value in data.items():
         if key not in ignored_keys:
             setattr(user, key, value)
-    storage.save()
+    user.save()
     return jsonify(user.to_dict()), 200
