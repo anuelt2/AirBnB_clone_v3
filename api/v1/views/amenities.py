@@ -58,8 +58,7 @@ def post_amenity():
     if "name" not in data:
         abort(400, description="Missing name")
     new_amenity = Amenity(**data)
-    storage.new(new_amenity)
-    storage.save()
+    new_amenity.save()
     return jsonify(new_amenity.to_dict()), 201
 
 
@@ -83,5 +82,5 @@ def put_amenity(amenity_id):
     for key, value in data.items():
         if key not in ignored_keys:
             setattr(amenity, key, value)
-    storage.save()
+    amenity.save()
     return jsonify(amenity.to_dict()), 200
