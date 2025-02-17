@@ -90,7 +90,7 @@ class TestFileStorage(unittest.TestCase):
         """Test that save properly saves objects to file.json"""
         pass
 
-        @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get(self):
         """Test that retrieves object from file.json"""
         state = State(name="Alberta")
