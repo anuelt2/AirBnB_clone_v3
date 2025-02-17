@@ -135,7 +135,7 @@ def places_search():
 
     all_cities = set(s_cities + cities)
     places = [place for city in all_cities for place in city.places]
-    
+
     if data.get("amenities"):
         if not places:
             places = storage.all(Place).values()
