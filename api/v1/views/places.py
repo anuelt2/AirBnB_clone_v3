@@ -69,9 +69,9 @@ def post_place(city_id):
     city = storage.get(City, city_id)
     if not city:
         abort(404)
-    data = request.get_json()
-    if data is None:
+    if not request.is_json:
         abort(400, description="Not a JSON")
+    data = request.get_json()
     if "user_id" not in data:
         abort(400, description="Missing user_id")
     user_id = data["user_id"]
@@ -93,9 +93,9 @@ def put_place(place_id):
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
-    data = request.get_json()
-    if data is None:
+    if not request.is_json:
         abort(400, description="Not a JSON")
+    data = request.get_json()
     ignored_keys = ["id", "user_id", "city_id", "created_at", "updated_at"]
     for key, value in data.items():
         if key not in ignored_keys:
@@ -110,10 +110,10 @@ def places_search():
     Handle POST requests to "/places_search" to retrieve all Place objects
     depending on the JSON in the body of the request
     """
-    data = request.get_json()
-    if data is None:
+    if not request.is_json:
         abort(400, description="Not a JSON")
 
+    data = request.get_json()
     if data == {} or all(
             isinstance(value, list) and not value
             for value in data.values()):
