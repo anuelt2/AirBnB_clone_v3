@@ -69,7 +69,7 @@ def post_amenity():
         )
 def put_amenity(amenity_id):
     """
-    Handle PUT requests tp "/amenities/<amenity_id>"
+    Handle PUT requests to "/amenities/<amenity_id>"
     to update an Amenity object
     """
     amenity = storage.get(Amenity, amenity_id)

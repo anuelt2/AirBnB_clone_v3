@@ -29,7 +29,7 @@ def all_state_cities(state_id):
 
 @app_views.route("/cities/<city_id>", methods=["GET"], strict_slashes=False)
 def city(city_id):
-    """Handle GET requests to "/city/<city_id>" to retrieve a City object"""
+    """Handle GET requests to "/cities/<city_id>" to retrieve a City object"""
     city = storage.get(City, city_id)
     if not city:
         abort(404)
