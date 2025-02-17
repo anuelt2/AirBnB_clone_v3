@@ -11,14 +11,18 @@ from models.state import State
 
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
 def all_states():
-    """Handle GET requests to "/state" to retrieve list of all State objects"""
+    """
+    Handle GET requests to "/states" to retrieve list of all State objects
+    """
     states = storage.all(State)
     return jsonify([state.to_dict() for state in states.values()])
 
 
 @app_views.route("/states/<state_id>", methods=["GET"], strict_slashes=False)
 def get_state(state_id):
-    """Handle GET requests to "/state/<state_id>" to retrieve a State object"""
+    """
+    Handle GET requests to "/states/<state_id>" to retrieve a State object
+    """
     state = storage.get(State, state_id)
     if not state:
         abort(404)
