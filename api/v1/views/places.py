@@ -127,49 +127,25 @@ def places_search():
                   for state_id in data["states"]
                   if storage.get(State, state_id)]
         s_cities = [city for state in states for city in state.cities]
-        #places = [place for city in s_cities for place in city.places]
 
     cities = []
     if data.get("cities"):
         cities = [storage.get(City, city_id)
                   for city_id in data["cities"]
                   if storage.get(City, city_id)]
-        #places = [place for city in cities for place in city.places]
 
     all_cities = set(s_cities + cities)
     places = [place for city in all_cities for place in city.places]
-
+    
     if data.get("amenities"):
-        #amenities = [storage.get(Amenity, amenity_id)
-        #             for amenity_id in data["amenities"]
-        #             if storage.get(Amenity, amenity_id)]
-
-        amenities = []
-        for amenity_id in data["amenities"]:
-            amenity = storage.get(Amenity, amenity_id)
-            amenity = amenity.to_dict()
-            amenity_ids = amenity["id"]
-            amenities.append(amenity_ids)
-
         if not places:
-            places = list(storage.all(Place).values())
+            places = storage.all(Place).values()
+        amenities = [storage.get(Amenity, amenity_id)
+                     for amenity_id in data.get("amenities")]
+        places = [place for place in places if all
+                  ([amenity in place.amenities for amenity in amenities])]
 
-        #filtered_places = []
-        #p_amen = []
-        #for place in places:
-        #    if storage_t == "db":
-        #        place_amenities = place.amenities
-        #    else:
-        #        place_amenities = [storage.get(Amenity, amenity_id)
-        #                           for amenity_id in place.amenities]
-        #    place_amenities = place_amenities.to_dict()
-        #    p_amen.append(place_amenities)
+    filtered_places = [{key: value for key, value in place.to_dict().items()
+                        if key != "amenities"} for place in places]
 
-            #place_amenities = place_amenities
-         #   if all(amenity in p_amen for amenity in amenities):
-          #      filtered_places.append(place)
-
-        #places = filtered_places
-        return places
-
-    return jsonify([place.to_dict() for place in places])
+    return jsonify(filtered_places)
