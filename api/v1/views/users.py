@@ -43,9 +43,9 @@ def delete_user(user_id):
 @app_views.route("/users", methods=["POST"], strict_slashes=False)
 def post_user():
     """Handle POST requests to "/users" to create a User"""
-    data = request.get_json()
-    if data is None:
+    if not request.is_json:
         abort(400, description="Not a JSON")
+    data = request.get_json()
     if "email" not in data:
         abort(400, description="Missing email")
     if "password" not in data:
@@ -64,9 +64,9 @@ def put_user(user_id):
     user = storage.get(User, user_id)
     if not user:
         abort(404)
-    data = request.get_json()
-    if data is None:
+    if not request.is_json:
         abort(400, description="Not a JSON")
+    data = request.get_json()
     ignored_keys = ["id", "email", "created_at", "updated_at"]
     for key, value in data.items():
         if key not in ignored_keys:
